@@ -9,7 +9,7 @@ namespace CastleGrimtol.Project.Models
     public string Name { get; set; }
     public string Description { get; set; }
     public List<Item> Items { get; set; }
-    public Dictionary<string, IRoom> Exits { get; set; }
+
     public Dictionary<Direction, IRoom> NearbyRooms { get; set; }
 
 
@@ -35,6 +35,7 @@ namespace CastleGrimtol.Project.Models
       Name = name;
       Description = description;
       NearbyRooms = new Dictionary<Direction, IRoom>();
+      Items = new List<Item>();
     }
   }
 

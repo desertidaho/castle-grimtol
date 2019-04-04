@@ -16,7 +16,7 @@ namespace CastleGrimtol.Project
     //Start the game
     public void Run()
     {
-      // Player player = new Player();
+      CurrentPlayer = new Player("Sailor");
       Intro();
       while (Alive)
       {
@@ -127,8 +127,8 @@ namespace CastleGrimtol.Project
       port.AddNearbyRoom(Direction.starboard, passageway);
       starboard.AddNearbyRoom(Direction.port, passageway);
 
-      Item soccerball = new Item("soccerball", "a white, black, and yellow, size 5, rarely used Adidas soccerball.", port);
-
+      Item soccerball = new Item("soccerball", "a white, black, and yellow, size 5, rarely used Adidas soccerball.");
+      port.Items.Add(soccerball);
 
       CurrentRoom = aft;
       Alive = true;
@@ -228,7 +228,10 @@ Press any key to continue.");
     //Print the list of items in the players inventory to the console
     public void Inventory()
     {
-      // CurrentPlayer.PrintInventory(List items);
+      for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
+      {
+        Console.WriteLine(value: $"{i + 1}. {CurrentPlayer.Inventory[i].Name} by {CurrentPlayer.Inventory[i].Description}");
+      }
     }
 
     //Display the CurrentRoom Description, Exits, and Items
@@ -261,9 +264,15 @@ Press any key to continue.");
     //When taking an item be sure the item is in the current room 
     //before adding it to the player inventory, Also don't forget to 
     //remove the item from the room it was picked up in
-    public void TakeItem(string itemName)
+    public void TakeItem(string response)
     {
-
+      string name = response.Split(" ")[1];
+      Item item = CurrentRoom.Items.Find(i =>
+      {
+        return i.Name.ToLower() == name;
+      });
+      CurrentRoom.Items.Remove(item);
+      CurrentPlayer.AddItem(item);
     }
 
     //No need to Pass a room since Items can only be used in the CurrentRoom

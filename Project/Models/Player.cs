@@ -4,7 +4,7 @@ using CastleGrimtol.Project.Interfaces;
 
 namespace CastleGrimtol.Project.Models
 {
-  public class Player
+  public class Player : IPlayer
   {
     public string Name { get; set; }
     public List<Item> Inventory { get; set; }
