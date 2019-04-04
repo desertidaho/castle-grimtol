@@ -12,7 +12,7 @@ namespace CastleGrimtol.Project.Interfaces
     void Run();
 
     //Initialize rooms, their exits, and add items to rooms
-    void Initialize();
+    void SetUp();
 
     //Restarts the game 
     void Reset();

@@ -10,15 +10,6 @@ namespace CastleGrimtol.Project.Models
     public List<Item> Inventory { get; set; }
 
 
-
-    public void PrintInventory(List<Item> inventory)
-    {
-      for (int i = 0; i < inventory.Count; i++)
-      {
-        Console.WriteLine(value: $"{i + 1}. {inventory[i].Name} by {inventory[i].Description}");
-      }
-    }
-
     public void AddItem(Item item)
     {
       Inventory.Add(item);
@@ -29,7 +20,6 @@ namespace CastleGrimtol.Project.Models
     {
       Name = name;
       Inventory = new List<Item>();
-
     }
 
   }

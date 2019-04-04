@@ -8,7 +8,6 @@ namespace CastleGrimtol.Project.Interfaces
     string Name { get; set; }
     List<Item> Inventory { get; set; }
 
-    void PrintInventory(List<Item> items);
   }
 
 }

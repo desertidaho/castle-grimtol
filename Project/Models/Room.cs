@@ -44,6 +44,8 @@ namespace CastleGrimtol.Project.Models
     forward,
     aft,
     port,
-    starboard
+    starboard,
+    up,
+    down
   }
 }
