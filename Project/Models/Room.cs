@@ -23,8 +23,9 @@ namespace CastleGrimtol.Project.Models
       if (NearbyRooms.ContainsKey(direction))
       {
         return NearbyRooms[direction];
+
       }
-      Console.WriteLine("You cannot go that way!");
+      Console.WriteLine("You cannot go that way! \n ");
       return (IRoom)this;
     }
 

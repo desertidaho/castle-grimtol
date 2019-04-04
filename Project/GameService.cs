@@ -16,7 +16,7 @@ namespace CastleGrimtol.Project
     //Start the game
     public void Run()
     {
-      Player player = new Player();
+      // Player player = new Player();
       Intro();
       while (Alive)
       {
@@ -112,10 +112,10 @@ namespace CastleGrimtol.Project
     public void Initialize()
     {
       Room aft = new Room("aft cabin", "You're in the aft cabin, this is where you were sleeping. The only thing here is your bed, clothes, and personal items. There's a small window to port, but too small for you to squeeze out of. The only door leads forward.");
-      Room passageway = new Room("passageway", "You're in the passageway, which runs forward and aft. There's water on the deck and the water level is rising quickly. From the passageway you can enter the aft cabin, forward berth, port side, or starboard side of the boat.");
-      Room forward = new Room("forward berth", "As you enter the forward berth you feel a rush of water on your feet and legs and you see a large hole the size of a soccerball on the forward-most starboard side, water is rushing into your boat.");
-      Room port = new Room("port", "The port side of the boat has nautical gear scattered about, several piles of books and charts, and a soccerball that never gets used (because you live on a boat).");
-      Room starboard = new Room("starboard", "The starboard side of the boat has a galley with food and dishes. You're feeling hungry, maybe you should make a sandwich, afterall the water on the deck is only up to your ankles.");
+      Room passageway = new Room("passageway", "You're in the passageway, which runs forward and aft. There's water on the deck and the water level is rising quickly. \nFrom the passageway you can enter the aft cabin, forward berth, port side, or starboard side of the boat.");
+      Room forward = new Room("forward berth", "As you enter the forward berth you feel a rush of water on your feet and legs and you see a large hole the size of a \nsoccerball on the forward-most starboard side, water is rushing into your boat.");
+      Room port = new Room("port", "The port side of the boat has nautical gear scattered about, several piles of books and charts, and a \nsoccerball that never gets used (because you live on a boat).");
+      Room starboard = new Room("starboard", "The starboard side of the boat has a galley with food and dishes. You're feeling hungry, maybe you should make a \nsandwich, afterall the water on the deck is only up to your ankles.");
 
       passageway.AddNearbyRoom(Direction.aft, aft);
       passageway.AddNearbyRoom(Direction.forward, forward);
@@ -126,6 +126,9 @@ namespace CastleGrimtol.Project
       forward.AddNearbyRoom(Direction.aft, passageway);
       port.AddNearbyRoom(Direction.starboard, passageway);
       starboard.AddNearbyRoom(Direction.port, passageway);
+
+      Item soccerball = new Item("soccerball", "a white, black, and yellow, size 5, rarely used Adidas soccerball.", port);
+
 
       CurrentRoom = aft;
       Alive = true;
@@ -175,10 +178,32 @@ namespace CastleGrimtol.Project
     public void Go(string response)
     {
       char letter = response[3];
-      if (CurrentRoom is Room aft && letter == 'f')
+      if (letter == 'f')
       {
-        CurrentRoom.MoveToRoom(Direction.forward);
+        Console.Clear();
+        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.forward);
       }
+      else if (letter == 'a')
+      {
+        Console.Clear();
+        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.aft);
+      }
+      else if (letter == 'p')
+      {
+        Console.Clear();
+        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.port);
+      }
+      else if (letter == 's')
+      {
+        Console.Clear();
+        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.starboard);
+      }
+      else
+      {
+        Console.Clear();
+        Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+      }
+
     }
 
     //Should display a list of commands to the console
@@ -210,7 +235,7 @@ Press any key to continue.");
     public void Look()
     {
       Console.Clear();
-      Console.WriteLine("Okay, have another look around. Here's what you see:");
+      Console.WriteLine("Okay, have another look around. Here's what you see: \n");
     }
 
     //Stops the application
