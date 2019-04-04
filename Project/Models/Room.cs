@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CastleGrimtol.Project.Interfaces;
 
@@ -5,9 +6,42 @@ namespace CastleGrimtol.Project.Models
 {
   public class Room : IRoom
   {
-    public string Name { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public string Description { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public List<Item> Items { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public Dictionary<string, IRoom> Exits { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public List<Item> Items { get; set; }
+    public Dictionary<string, IRoom> Exits { get; set; }
+    public Dictionary<Direction, IRoom> NearbyRooms { get; set; }
+
+
+    public void AddNearbyRoom(Direction direction, IRoom room)
+    {
+      NearbyRooms.Add(direction, room);
+    }
+
+    public IRoom MoveToRoom(Direction direction)
+    {
+      if (NearbyRooms.ContainsKey(direction))
+      {
+        return NearbyRooms[direction];
+      }
+      Console.WriteLine("You cannot go that way!");
+      return (IRoom)this;
+    }
+
+
+    public Room(string name, string description)
+    {
+      Name = name;
+      Description = description;
+      NearbyRooms = new Dictionary<Direction, IRoom>();
+    }
+  }
+
+  public enum Direction
+  {
+    forward,
+    aft,
+    port,
+    starboard
   }
 }

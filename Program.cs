@@ -8,8 +8,8 @@ namespace CastleGrimtol
     public static void Main(string[] args)
     {
       Console.Clear();
-      App app = new App();
-      app.Run();
+      GameService gs = new GameService();
+      gs.Run();
     }
   }
 }

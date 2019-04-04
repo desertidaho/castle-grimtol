@@ -8,8 +8,11 @@ namespace CastleGrimtol.Project.Interfaces
     Room CurrentRoom { get; set; }
     Player CurrentPlayer { get; set; }
 
-    //Initializes the game, creates rooms, their exits, and add items to rooms
-    void Setup();
+    //Start the game
+    void Run();
+
+    //Initialize rooms, their exits, and add items to rooms
+    void Initialize();
 
     //Restarts the game 
     void Reset();
@@ -18,7 +21,7 @@ namespace CastleGrimtol.Project.Interfaces
     void StartGame();
 
     //Gets the user input and calls the appropriate command
-    void GetUserInput();
+    void GetUserInput(string response);
 
     #region Console Commands
 
