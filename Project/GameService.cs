@@ -16,11 +16,12 @@ namespace CastleGrimtol.Project
     //Start the game
     public void Run()
     {
+      Player player = new Player();
       Intro();
       while (Alive)
       {
         Console.WriteLine($"{CurrentRoom.Description}");
-        Console.WriteLine($"\nWhat would you like to do? Or type help for help.");
+        Console.WriteLine($"\nWhat would you like to do? Type help for help.");
         string response = Console.ReadLine().ToLower();
         GetUserInput(response);
       }
@@ -110,11 +111,11 @@ namespace CastleGrimtol.Project
     //Initialize rooms, their exits, and add items to rooms
     public void Initialize()
     {
-      Room aft = new Room("aft cabin", "You're in the aft cabin, this is where you were sleeping. The only thing here is your bed, clothes, and personal items. There's a small window to port, but too small for you to squeeze out of.");
-      Room passageway = new Room("passageway", "You're in the passageway, which runs forward and aft. There's water on the floor and the water level is rising quickly. From the passageway you can enter the aft cabin, forward berth, port side, or starboard side of the ship.");
+      Room aft = new Room("aft cabin", "You're in the aft cabin, this is where you were sleeping. The only thing here is your bed, clothes, and personal items. There's a small window to port, but too small for you to squeeze out of. The only door leads forward.");
+      Room passageway = new Room("passageway", "You're in the passageway, which runs forward and aft. There's water on the deck and the water level is rising quickly. From the passageway you can enter the aft cabin, forward berth, port side, or starboard side of the boat.");
       Room forward = new Room("forward berth", "As you enter the forward berth you feel a rush of water on your feet and legs and you see a large hole the size of a soccerball on the forward-most starboard side, water is rushing into your boat.");
-      Room port = new Room("port", "The port side of the ship has scattered miscellaneous nautical gear, books, and some sports equipment including a soccerball.");
-      Room starboard = new Room("starboard", "The starboard side of the ship has a galley with food and dishes. You're feeling hungry, maybe you should make a sandwich.");
+      Room port = new Room("port", "The port side of the boat has nautical gear scattered about, several piles of books and charts, and a soccerball that never gets used (because you live on a boat).");
+      Room starboard = new Room("starboard", "The starboard side of the boat has a galley with food and dishes. You're feeling hungry, maybe you should make a sandwich, afterall the water on the deck is only up to your ankles.");
 
       passageway.AddNearbyRoom(Direction.aft, aft);
       passageway.AddNearbyRoom(Direction.forward, forward);
@@ -162,6 +163,11 @@ namespace CastleGrimtol.Project
       {
         Quit();
       }
+      else
+      {
+        Console.Clear();
+        Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+      }
     }
 
     //Validate CurrentRoom.Exits contains the desired direction
@@ -181,7 +187,7 @@ namespace CastleGrimtol.Project
       Console.Clear();
       Console.WriteLine(@"When prompted you can respond with following commands:
 
-Go + a direction (ex. go forward),
+Go + a direction (ex. go forward, aft, port, or starboard),
 Use + the item name (ex. use screwdriver), 
 Take + the item name (ex. take peanut butter), 
 Look (to get a description of the room), 
@@ -197,25 +203,28 @@ Press any key to continue.");
     //Print the list of items in the players inventory to the console
     public void Inventory()
     {
-
+      // CurrentPlayer.PrintInventory(List items);
     }
 
     //Display the CurrentRoom Description, Exits, and Items
     public void Look()
     {
-
+      Console.Clear();
+      Console.WriteLine("Okay, have another look around. Here's what you see:");
     }
 
     //Stops the application
     public void Quit()
     {
-
+      Console.Clear();
+      System.Console.WriteLine($"Sorry to see you go. Guess we can't all be winners. \n \nGoodbye.");
+      Alive = false;
     }
 
     //Restarts the game 
     public void Reset()
     {
-
+      Alive = true;
     }
 
     //Setup and Starts the Game loop

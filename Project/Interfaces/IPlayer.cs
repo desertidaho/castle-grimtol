@@ -7,5 +7,7 @@ namespace CastleGrimtol.Project.Interfaces
   {
     string PlayerName { get; set; }
     List<Item> Inventory { get; set; }
+    void PrintInventory(List<Item> items);
   }
+
 }
