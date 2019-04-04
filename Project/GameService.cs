@@ -97,14 +97,10 @@ namespace CastleGrimtol.Project
                                                               /_/        /__/");
 
       Console.WriteLine("\nYou wake up confused but quickly realize something has hit the bow or your boat and there's water rushing in.");
-
       Console.WriteLine("\nPress any key to continue.");
       Console.ReadKey();
 
-      Console.Clear();
-      Console.WriteLine("Your goal is to go from the aft cabin to the forward berth and plug the hole to stop water from flooding your boat.");
-      Console.WriteLine("\nIf you're not familiar with boats your directions will be: \n(F)orward to go toward the front of the ship, \n(A)ft to go towards the back of the ship, \n(P)ort to go to the left side of the ship, and \n(S)tarboard to go to the right side of the ship.");
-      Console.WriteLine("\nPress any key to begin. Good luck.");
+
       Initialize();
     }
 
@@ -114,8 +110,8 @@ namespace CastleGrimtol.Project
       Room aft = new Room("aft cabin", "You're in the aft cabin, this is where you were sleeping. The only thing here is your bed, clothes, and personal items. There's a small window to port, but too small for you to squeeze out of. The only door leads forward.");
       Room passageway = new Room("passageway", "You're in the passageway, which runs forward and aft. There's water on the deck and the water level is rising quickly. \nFrom the passageway you can enter the aft cabin, forward berth, port side, or starboard side of the boat.");
       Room forward = new Room("forward berth", "As you enter the forward berth you feel a rush of water on your feet and legs and you see a large hole the size of a \nsoccerball on the forward-most starboard side, water is rushing into your boat.");
-      Room port = new Room("port", "The port side of the boat has nautical gear scattered about, several piles of books and charts, and a \nsoccerball that never gets used (because you live on a boat).");
       Room starboard = new Room("starboard", "The starboard side of the boat has a galley with food and dishes. You're feeling hungry, maybe you should make a \nsandwich, afterall the water on the deck is only up to your ankles.");
+      Room port = new Room("port", "The port side of the boat has nautical gear scattered about, several piles of books and charts, and a \nsoccerball that never gets used (because you live on a boat).");
 
       passageway.AddNearbyRoom(Direction.aft, aft);
       passageway.AddNearbyRoom(Direction.forward, forward);
@@ -132,6 +128,18 @@ namespace CastleGrimtol.Project
 
       CurrentRoom = aft;
       Alive = true;
+
+      StartGame();
+    }
+
+    //Setup and Starts the Game loop
+    public void StartGame()
+    {
+      Console.Clear();
+      Console.WriteLine("Your goal is to stop the water from flooding and sinking your boat.");
+      Console.WriteLine("\nIf you're not familiar with boats you can move: \nforward to go toward the front of the boat, \naft to go towards the back of the boat, \nport to go to the left side of the boat, and \nstarboard to go to the right side of the boat.");
+      Console.WriteLine("\nPress any key to begin. Good luck.");
+      Console.ReadKey();
       Console.Clear();
     }
 
@@ -165,6 +173,10 @@ namespace CastleGrimtol.Project
       else if (response[0] == 'q')
       {
         Quit();
+      }
+      else if (response[0] == 'r')
+      {
+        Reset();
       }
       else
       {
@@ -230,7 +242,11 @@ Press any key to continue.");
     {
       for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
       {
-        Console.WriteLine(value: $"{i + 1}. {CurrentPlayer.Inventory[i].Name} by {CurrentPlayer.Inventory[i].Description}");
+        Console.Clear();
+        Console.WriteLine(value: $"{i + 1}. {CurrentPlayer.Inventory[i].Name.ToUpper()[0] + CurrentPlayer.Inventory[i].Name.Substring(1)}: {CurrentPlayer.Inventory[i].Description} \n");
+        Console.WriteLine("What would you like to do?");
+        string response = Console.ReadLine().ToLower();
+        GetUserInput(response);
       }
     }
 
@@ -252,14 +268,10 @@ Press any key to continue.");
     //Restarts the game 
     public void Reset()
     {
-      Alive = true;
+      Alive = false;
+      Run();
     }
 
-    //Setup and Starts the Game loop
-    public void StartGame()
-    {
-
-    }
 
     //When taking an item be sure the item is in the current room 
     //before adding it to the player inventory, Also don't forget to 
@@ -273,6 +285,10 @@ Press any key to continue.");
       });
       CurrentRoom.Items.Remove(item);
       CurrentPlayer.AddItem(item);
+      CurrentRoom.Description = "The port side of the boat has nautical gear scattered about, and several piles of books and charts.";
+
+      Console.Clear();
+      Console.WriteLine("You have successfully taken the soccerball. \n");
     }
 
     //No need to Pass a room since Items can only be used in the CurrentRoom
