@@ -168,42 +168,36 @@ namespace CastleGrimtol.Project
     //Gets the user input and calls the appropriate command
     public void GetUserInput(string response)
     {
-      if (response[0] == 'g')
+      switch (response[0])
       {
-        Go(response);
-      }
-      else if (response[0] == 'u')
-      {
-        UseItem(response);
-      }
-      else if (response[0] == 't')
-      {
-        TakeItem(response);
-      }
-      else if (response[0] == 'l')
-      {
-        Look();
-      }
-      else if (response[0] == 'i')
-      {
-        Inventory();
-      }
-      else if (response[0] == 'h')
-      {
-        Help();
-      }
-      else if (response[0] == 'q')
-      {
-        Quit();
-      }
-      else if (response[0] == 'r')
-      {
-        Reset();
-      }
-      else
-      {
-        Console.Clear();
-        Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+        case 'g':
+          Go(response);
+          break;
+        case 'u':
+          UseItem(response);
+          break;
+        case 't':
+          TakeItem(response);
+          break;
+        case 'l':
+          Look();
+          break;
+        case 'i':
+          Inventory();
+          break;
+        case 'h':
+          Help();
+          break;
+        case 'q':
+          Quit();
+          break;
+        case 'r':
+          Reset();
+          break;
+        default:
+          Console.Clear();
+          Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+          break;
       }
     }
 
@@ -212,7 +206,8 @@ namespace CastleGrimtol.Project
     public void Go(string response)
     {
       count += 1;
-      char letter = response[3];
+      string answer = response.Split(" ")[1];
+      char letter = answer[0];
       if (letter == 'f')
       {
         Console.Clear();
@@ -263,6 +258,8 @@ Look (to get a description of the room),
 Inventory (to see what items you have available), 
 Reset (to restart the game),
 Quit (to end the game).
+
+Your goal is to plug the hole in the boat with something, then make a radio mayday call from the cockpit outside.
 
 Press any key to continue.");
       Console.ReadKey();
@@ -410,7 +407,7 @@ Press any key to continue.");
         else
         {
           Console.Clear();
-          Console.WriteLine("Oh no! You answered incorrectly. \nThe radio has short-circuted and you have no way to call for help (except maybe your computer and cellphone dut disregard those items). \n \nYou lose. Game over. \nStudy up buttercup, better luck next time. \nWant to play again? Yes/No");
+          Console.WriteLine("Oh no! You answered incorrectly. \nThe radio has short-circuted and you have no way to call for help (except maybe your computer and cellphone \nbut disregard those items for now). \n \nYou lose. Game over. \nStudy up buttercup, better luck next time. \nWant to play again? Yes/No");
           string play = Console.ReadLine().ToLower();
           if (play[0] == 'y')
           {
