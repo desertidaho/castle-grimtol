@@ -9,14 +9,11 @@ namespace CastleGrimtol.Project.Models
     public string Description { get; set; }
     public List<Item> Items { get; set; }
 
-
-
     public Item(string name, string description)
     {
       Name = name;
       Description = description;
       Items = new List<Item>();
     }
-
   }
 }

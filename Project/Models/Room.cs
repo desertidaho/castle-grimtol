@@ -9,9 +9,7 @@ namespace CastleGrimtol.Project.Models
     public string Name { get; set; }
     public string Description { get; set; }
     public List<Item> Items { get; set; }
-
     public Dictionary<Direction, IRoom> NearbyRooms { get; set; }
-
 
     public void AddNearbyRoom(Direction direction, IRoom room)
     {
@@ -28,7 +26,6 @@ namespace CastleGrimtol.Project.Models
       Console.WriteLine("You cannot go that way! \n ");
       return (IRoom)this;
     }
-
 
     public Room(string name, string description)
     {

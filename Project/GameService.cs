@@ -14,7 +14,6 @@ namespace CastleGrimtol.Project
     public int count { get; set; } = 0;
     public bool StoppedFlooding { get; set; } = false;
 
-    //Start the game
     public void Run()
     {
       CurrentPlayer = new Player("Sailor");
@@ -117,11 +116,9 @@ namespace CastleGrimtol.Project
       Console.WriteLine("\nPress any key to continue.");
       Console.ReadKey();
 
-
       SetUp();
     }
 
-    //Initialize rooms, their exits, and add items to rooms
     public void SetUp()
     {
       Room aft = new Room("aft cabin", "You're in the aft cabin, this is where you were sleeping. The only thing here is your bed, clothes, and personal items. There's a small window to port, but too small for you to squeeze out of. The only door leads forward.");
@@ -154,7 +151,6 @@ namespace CastleGrimtol.Project
       StartGame();
     }
 
-    //Setup and Starts the Game loop
     public void StartGame()
     {
       Console.Clear();
@@ -165,7 +161,6 @@ namespace CastleGrimtol.Project
       Console.Clear();
     }
 
-    //Gets the user input and calls the appropriate command
     public void GetUserInput(string response)
     {
       switch (response[0])
@@ -201,61 +196,49 @@ namespace CastleGrimtol.Project
       }
     }
 
-    //Validate CurrentRoom.Exits contains the desired direction
-    //if it does change the CurrentRoom
     public void Go(string response)
     {
       count += 1;
-      char letter = ' ';
+      string direction = "";
       string answer = response.Split(" ")[1];
       for (int i = 0; i < answer.Length; i++)
       {
         if (answer[i] == ' ')
         {
           continue;
-          // Console.Clear();
-          // Console.WriteLine($"Invalid command! Try again or ask for help. \n");
         }
         else
         {
-          letter = answer[0];
-          break;
+          direction = direction + answer[i];
         }
       }
-      switch (letter)
+      Console.Clear();
+      switch (direction)
       {
-        case 'f':
-          Console.Clear();
+        case "forward":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.forward);
           break;
-        case 'a':
-          Console.Clear();
+        case "aft":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.aft);
           break;
-        case 'p':
-          Console.Clear();
+        case "port":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.port);
           break;
-        case 's':
-          Console.Clear();
+        case "starboard":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.starboard);
           break;
-        case 'u':
-          Console.Clear();
+        case "up":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.up);
           break;
-        case 'd':
-          Console.Clear();
+        case "down":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.down);
           break;
         default:
-          Console.Clear();
           Console.WriteLine($"Invalid command! Try again or ask for help. \n");
           break;
       }
     }
 
-    //Should display a list of commands to the console
     public void Help()
     {
       Console.Clear();
@@ -274,10 +257,8 @@ Your goal is to plug the hole in the boat with something, then make a radio mayd
 Press any key to continue.");
       Console.ReadKey();
       Console.Clear();
-
     }
 
-    //Print the list of items in the players inventory to the console
     public void Inventory()
     {
       Console.Clear();
@@ -297,14 +278,12 @@ Press any key to continue.");
       GetUserInput(response);
     }
 
-    //Display the CurrentRoom Description, Exits, and Items
     public void Look()
     {
       Console.Clear();
       Console.WriteLine("Okay, have another look around. Here's what you see: \n");
     }
 
-    //Stops the application
     public void Quit()
     {
       Console.Clear();
@@ -312,7 +291,6 @@ Press any key to continue.");
       Playing = false;
     }
 
-    //Restarts the game 
     public void Reset()
     {
       Playing = false;
@@ -320,9 +298,6 @@ Press any key to continue.");
       Run();
     }
 
-    //When taking an item be sure the item is in the current room 
-    //before adding it to the player inventory, Also don't forget to 
-    //remove the item from the room it was picked up in
     public void TakeItem(string response)
     {
       string name = response.Split(" ")[1];
@@ -354,9 +329,6 @@ Press any key to continue.");
       }
     }
 
-    //No need to Pass a room since Items can only be used in the CurrentRoom
-    //Make sure you validate the item is in the room or player inventory before
-    //being able to use the item
     public void UseItem(string itemName)
     {
       string name = itemName.Split(" ")[1].ToLower();
