@@ -158,7 +158,7 @@ namespace CastleGrimtol.Project
     public void StartGame()
     {
       Console.Clear();
-      Console.WriteLine("Your goal is to stop the water from flooding your boat, then make a mayday call for help. \nHurry, if you waste too much time your boat will sink and you'll lose the game.");
+      Console.WriteLine("Your goal is to stop the water from flooding your boat, then make a radio mayday call for help from the cockpit. \nHurry, if you waste too much time your boat will sink and you'll lose the game.");
       Console.WriteLine("\nIf you're not familiar with boats you can move: \nforward to go toward the front of the boat, \naft to go toward the back of the boat, \nport to go to the left side of the boat, \nstarboard to go to the right side of the boat, \nup to go outside to the cockpit of the boat, and \ndown to go back down into the boat.");
       Console.WriteLine("\nPress any key to begin. Good luck.");
       Console.ReadKey();
@@ -206,42 +206,52 @@ namespace CastleGrimtol.Project
     public void Go(string response)
     {
       count += 1;
+      char letter = ' ';
       string answer = response.Split(" ")[1];
-      char letter = answer[0];
-      if (letter == 'f')
+      for (int i = 0; i < answer.Length; i++)
       {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.forward);
+        if (answer[i] == ' ')
+        {
+          continue;
+          // Console.Clear();
+          // Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+        }
+        else
+        {
+          letter = answer[0];
+          break;
+        }
       }
-      else if (letter == 'a')
+      switch (letter)
       {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.aft);
-      }
-      else if (letter == 'p')
-      {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.port);
-      }
-      else if (letter == 's')
-      {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.starboard);
-      }
-      else if (letter == 'u')
-      {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.up);
-      }
-      else if (letter == 'd')
-      {
-        Console.Clear();
-        CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.down);
-      }
-      else
-      {
-        Console.Clear();
-        Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+        case 'f':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.forward);
+          break;
+        case 'a':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.aft);
+          break;
+        case 'p':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.port);
+          break;
+        case 's':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.starboard);
+          break;
+        case 'u':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.up);
+          break;
+        case 'd':
+          Console.Clear();
+          CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.down);
+          break;
+        default:
+          Console.Clear();
+          Console.WriteLine($"Invalid command! Try again or ask for help. \n");
+          break;
       }
     }
 
@@ -360,7 +370,7 @@ Press any key to continue.");
         StoppedFlooding = true;
         CurrentRoom.Description = "You're in the forward berth, it's a mess and there's water everywhere but the soccerball is plugging the hole \nand there's no water leaking in.";
         Console.Clear();
-        Console.WriteLine("Congratulations! You saved your boat from sinking. It's a good thing you had that soccerball. \nNow hurry and go up to the cockpit outside to make a mayday call. \n ");
+        Console.WriteLine("You saved your boat from sinking. It's a good thing you had that soccerball. \nNow hurry and go up to the cockpit outside to make a mayday call. \n ");
       }
       else if (CurrentRoom.Description[7] == 'o' && name == "radio" && StoppedFlooding)
       {
