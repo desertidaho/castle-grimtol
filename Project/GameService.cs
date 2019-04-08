@@ -36,7 +36,14 @@ namespace CastleGrimtol.Project
             break;
           }
         }
-        Console.WriteLine($"{CurrentRoom.Description}");
+        if (CurrentRoom.Name == "passageway" && StoppedFlooding)
+        {
+          Console.WriteLine("You're in the passageway, which runs forward and aft. There's water on the deck but the water level isn't rising. \nFrom the passageway you can enter the aft cabin, forward berth, port side, starboard side, \nor go up to the cockpit outside.");
+        }
+        else
+        {
+          Console.WriteLine($"{CurrentRoom.Description}");
+        }
         Console.WriteLine($"\nWhat would you like to do? Type help for help.");
         string response = Console.ReadLine().ToLower();
         GetUserInput(response);
@@ -163,30 +170,37 @@ namespace CastleGrimtol.Project
 
     public void GetUserInput(string response)
     {
-      switch (response[0])
+      string[] inputArr = response.Split(" ");
+      string command = inputArr[0].ToLower();
+      string option = "";
+      if (inputArr.Length > 1)
       {
-        case 'g':
-          Go(response);
+        option = inputArr[1];
+      }
+      switch (command)
+      {
+        case "go":
+          Go(option);
           break;
-        case 'u':
-          UseItem(response);
+        case "use":
+          UseItem(option);
           break;
-        case 't':
-          TakeItem(response);
+        case "take":
+          TakeItem(option);
           break;
-        case 'l':
+        case "look":
           Look();
           break;
-        case 'i':
+        case "inventory":
           Inventory();
           break;
-        case 'h':
+        case "help":
           Help();
           break;
-        case 'q':
+        case "quit":
           Quit();
           break;
-        case 'r':
+        case "reset":
           Reset();
           break;
         default:
@@ -199,21 +213,8 @@ namespace CastleGrimtol.Project
     public void Go(string response)
     {
       count += 1;
-      string direction = "";
-      string answer = response.Split(" ")[1];
-      for (int i = 0; i < answer.Length; i++)
-      {
-        if (answer[i] == ' ')
-        {
-          continue;
-        }
-        else
-        {
-          direction = direction + answer[i];
-        }
-      }
       Console.Clear();
-      switch (direction)
+      switch (response)
       {
         case "forward":
           CurrentRoom = (Room)CurrentRoom.MoveToRoom(Direction.forward);
@@ -300,43 +301,59 @@ Press any key to continue.");
 
     public void TakeItem(string response)
     {
-      string name = response.Split(" ")[1];
       Item item = CurrentRoom.Items.Find(i =>
       {
-        return i.Name.ToLower() == name;
+        return i.Name.ToLower() == response;
       });
-      CurrentRoom.Items.Remove(item);
-      CurrentPlayer.AddItem(item);
-      if (name == "soccerball")
+      if (item == null)
       {
-        CurrentRoom.Description = "The port side of the boat has nautical gear scattered about, and several piles of books and charts.";
-        Console.Clear();
-        Console.WriteLine("You have successfully taken the soccerball. \n");
-      }
-      else if (name == "radio")
-      {
-        CurrentRoom.Description = "The starboard side of the boat has a galley with food and dishes. \nYou're feeling hungry, maybe you should make a sandwich, afterall the water is only up to your ankles.";
-        Console.Clear();
-        Console.WriteLine("You have successfully taken the radio. \n");
-      }
-      else
-      {
-        Console.Clear();
         Console.WriteLine("You cannot take that item. \n");
         Console.WriteLine("What would you like to do?");
         string answer = Console.ReadLine().ToLower();
         GetUserInput(answer);
       }
+      else
+      {
+
+        CurrentRoom.Items.Remove(item);
+        CurrentPlayer.AddItem(item);
+        if (response == "soccerball")
+        {
+          CurrentRoom.Description = "The port side of the boat has nautical gear scattered about, and several piles of books and charts.";
+          Console.Clear();
+          Console.WriteLine("You have successfully taken the soccerball. \n");
+        }
+        else if (response == "radio")
+        {
+          CurrentRoom.Description = "The starboard side of the boat has a galley with food and dishes. \nYou're feeling hungry, maybe you should make a sandwich, afterall the water is only up to your ankles.";
+          Console.Clear();
+          Console.WriteLine("You have successfully taken the radio. \n");
+        }
+        else
+        {
+          Console.Clear();
+          Console.WriteLine("You cannot take that item. \n");
+          Console.WriteLine("What would you like to do?");
+          string answer = Console.ReadLine().ToLower();
+          GetUserInput(answer);
+        }
+      }
     }
 
     public void UseItem(string itemName)
     {
-      string name = itemName.Split(" ")[1].ToLower();
       Item item = CurrentPlayer.Inventory.Find(i =>
       {
-        return i.Name.ToLower() == name;
+        return i.Name.ToLower() == itemName;
       });
-      if (CurrentRoom.Description[0] == 'A' && name == "soccerball")
+      if (item == null)
+      {
+        Console.WriteLine("You cannot use that item. \n");
+        Console.WriteLine("What would you like to do?");
+        string answer = Console.ReadLine().ToLower();
+        GetUserInput(answer);
+      }
+      if (CurrentRoom.Description[0] == 'A' && itemName == "soccerball")
       {
         CurrentPlayer.Inventory.Remove(item);
         StoppedFlooding = true;
@@ -344,7 +361,7 @@ Press any key to continue.");
         Console.Clear();
         Console.WriteLine("You saved your boat from sinking. It's a good thing you had that soccerball. \nNow hurry and go up to the cockpit outside to make a mayday call. \n ");
       }
-      else if (CurrentRoom.Description[7] == 'o' && name == "radio" && StoppedFlooding)
+      else if (CurrentRoom.Description[7] == 'o' && itemName == "radio" && StoppedFlooding)
       {
         CurrentPlayer.Inventory.Remove(item);
         Console.Clear();
@@ -352,9 +369,7 @@ Press any key to continue.");
         Console.WriteLine(@"Does the following return true or false?
 
   Given two strings does str2 contain all of the letters of str1 in the order they occur in str1?
-  let str1 = 'cat'
-  let str2 = 'rclnaztsw'
-
+  
   function sameCharacters(str1, str2) {
   let count = 0
   let length = str1.length
@@ -367,7 +382,9 @@ Press any key to continue.");
     }
   }
   return false
-  }");
+  }
+  
+  sameCharacters('cat', 'rclnaztsw')");
         Console.WriteLine("\n");
         string answer = Console.ReadLine().ToLower();
         if (answer == "true")
